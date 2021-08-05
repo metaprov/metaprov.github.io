@@ -2,8 +2,10 @@
 
 set -eu
 
-MODELD_VERSION=${MODELD_VERSION:-stable-2.10.2}
+MODELD_VERSION="v0.3.578"
 INSTALLROOT=${INSTALLROOT:-"${HOME}/.modeld"}
+
+echo ${MODELD_VERSION}
 
 happyexit() {
   echo ""
@@ -14,7 +16,7 @@ happyexit() {
   echo "Now run:"
   echo ""
   echo "  modeldctl check --pre                     # validate that modeld can be installed"
-  echo "  modeldctl install | kubectl apply -f -    # install the control plane into the 'modeld' namespace"
+  echo "  modeldctl install                         # install the control plane into the 'modeld-system' namespace"
   echo "  modeldctl check                           # validate everything worked!"
   echo "  modeldctl dashboard                       # launch the dashboard"
   echo ""
@@ -88,19 +90,33 @@ checksumbin=$(command -v openssl) || checksumbin=$(command -v shasum) || {
   exit 1
 }
 
+dstfile="${INSTALLROOT}/bin/modeld-${MODELD_VERSION}"
+OS=$(uname -s)
+arch=$(uname -m)
+case $OS in
+  CYGWIN* | MINGW64*)
+    OS=windows.exe
+    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_windows_amd64/modeldctl.exe
+    ;;
+  Darwin)
+    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_darwin_amd64/modeldctl 
+    ;;
+  Linux)
+    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_linux_amd64/modeldctl 
+esac
+
 
 tmpdir=$(mktemp -d /tmp/modeld.XXXXXX)
 srcfile="modeld-cli-${MODELD_VERSION}-${OS}"
 if [ -n "${cli_arch}" ]; then
   srcfile="${srcfile}-${cli_arch}"
 fi
-dstfile="${INSTALLROOT}/bin/modeld-${MODELD_VERSION}"
-url="https://github.com/linkerd/linkerd2/releases/download/${LINKERD2_VERSION}/${srcfile}"
+
 
 if [ -e "${dstfile}" ]; then
   if validate_checksum "${dstfile}"; then
     echo ""
-    echo "Linkerd ${MODELD_VERSION} was already downloaded; making it the default 🎉"
+    echo "modeld ${MODELD_VERSION} was already downloaded; making it the default 🎉"
     echo ""
     echo "To force re-downloading, delete '${dstfile}' then run me again."
     (
@@ -111,17 +127,18 @@ if [ -e "${dstfile}" ]; then
   fi
 fi
 
-(
+(cd /
   cd "$tmpdir"
 
-  echo "Downloading ${srcfile}..."
-  curl -fLO "${url}"
+
+  echo "Downloading ${srcfile}... to ${tmpdir}"
+  curl -o ${srcfile} -fLO "${url}"
   echo "Download complete!"
 
-  if ! validate_checksum "${srcfile}"; then
-    exit 1
-  fi
-  echo ""
+  #if ! validate_checksum "${srcfile}"; then
+  #  exit 1
+  #fi
+  #echo ""
 )
 
 (
