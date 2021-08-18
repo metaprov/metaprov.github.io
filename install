@@ -2,7 +2,7 @@
 
 set -eu
 
-MODELD_VERSION="v0.3.602"
+MODELD_VERSION="v0.3.611"
 INSTALLROOT=${INSTALLROOT:-"${HOME}/.modeld"}
 
 echo ${MODELD_VERSION}
@@ -15,10 +15,10 @@ happyexit() {
   echo ""
   echo "Now run:"
   echo ""
-  echo "  modeldctl check --pre                     # validate that modeld can be installed"
-  echo "  modeldctl install                         # install the control plane into the 'modeld-system' namespace"
-  echo "  modeldctl check                           # validate everything worked!"
-  echo "  modeldctl dashboard                       # launch the dashboard"
+  echo "  md verify --pre       # validate that modeld can be installed"
+  echo "  md install            # install the control plane into the 'modeld-system' namespace"
+  echo "  md verify             # validate everything worked!"
+  echo "  md dashboard          # launch the dashboard"
   echo ""
   exit 0
 }
@@ -96,13 +96,13 @@ arch=$(uname -m)
 case $OS in
   CYGWIN* | MINGW64*)
     OS=windows.exe
-    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_windows_amd64/modeldctl.exe
+    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_windows_amd64/md.exe
     ;;
   Darwin)
-    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_darwin_amd64/modeldctl 
+    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_darwin_amd64/md 
     ;;
   Linux)
-    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_linux_amd64/modeldctl 
+    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_linux_amd64/md 
 esac
 
 
@@ -145,13 +145,13 @@ fi
   mkdir -p "${INSTALLROOT}/bin"
   mv "${tmpdir}/${srcfile}" "${dstfile}"
   chmod +x "${dstfile}"
-  rm -f "${INSTALLROOT}/bin/modeldctl"
-  ln -s "${dstfile}" "${INSTALLROOT}/bin/modeldctl"
+  rm -f "${INSTALLROOT}/bin/md"
+  ln -s "${dstfile}" "${INSTALLROOT}/bin/md"
 )
 
 
 rm -r "$tmpdir"
 
-echo "modeld ${MODELD_VERSION} was successfully installed 🎉"
+echo "md ${MODELD_VERSION} was successfully installed 🎉"
 echo ""
 happyexit
