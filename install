@@ -2,7 +2,7 @@
 
 set -eu
 
-MODELD_VERSION="v0.3.611"
+MODELD_VERSION="v0.3.633"
 INSTALLROOT=${INSTALLROOT:-"${HOME}/.modeld"}
 
 echo ${MODELD_VERSION}
@@ -15,10 +15,10 @@ happyexit() {
   echo ""
   echo "Now run:"
   echo ""
-  echo "  md verify --pre       # validate that modeld can be installed"
-  echo "  md install            # install the control plane into the 'modeld-system' namespace"
-  echo "  md verify             # validate everything worked!"
-  echo "  md dashboard          # launch the dashboard"
+  echo "  md system verify --pre       # validate that modeld can be installed"
+  echo "  md system install            # install the control plane into the 'modeld-system' namespace"
+  echo "  md system verify             # validate everything worked!"
+  echo "  md system dashboard          # launch the dashboard"
   echo ""
   exit 0
 }
