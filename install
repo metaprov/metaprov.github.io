@@ -2,21 +2,21 @@
 
 set -eu
 
-MODELD_VERSION="v0.3.633"
-INSTALLROOT=${INSTALLROOT:-"${HOME}/.modeld"}
+MODELA_VERSION="v0.3.633"
+INSTALLROOT=${INSTALLROOT:-"${HOME}/.modela"}
 
-echo ${MODELD_VERSION}
+echo ${MODELA_VERSION}
 
 happyexit() {
   echo ""
-  echo "Add the modeld CLI to your path with:"
+  echo "Add the modela CLI to your path with:"
   echo ""
   echo "  export PATH=\$PATH:${INSTALLROOT}/bin"
   echo ""
   echo "Now run:"
   echo ""
-  echo "  md system verify --pre       # validate that modeld can be installed"
-  echo "  md system install            # install the control plane into the 'modeld-system' namespace"
+  echo "  md system verify --pre       # validate that modela can be installed"
+  echo "  md system install            # install the control plane into the 'modela-system' namespace"
   echo "  md system verify             # validate everything worked!"
   echo "  md system dashboard          # launch the dashboard"
   echo ""
@@ -73,13 +73,13 @@ case $OS in
         cli_arch=$arch
         ;;
       *)
-        echo "There is no modeld $OS support for $arch. Please open an issue with your platform details."
+        echo "There is no modela $OS support for $arch. Please open an issue with your platform details."
         exit 1
         ;;
     esac
     ;;
   *)
-    echo "There is no modeld support for $OS/$arch. Please open an issue with your platform details."
+    echo "There is no modela support for $OS/$arch. Please open an issue with your platform details."
     exit 1
     ;;
 esac
@@ -90,24 +90,24 @@ checksumbin=$(command -v openssl) || checksumbin=$(command -v shasum) || {
   exit 1
 }
 
-dstfile="${INSTALLROOT}/bin/modeld-${MODELD_VERSION}"
+dstfile="${INSTALLROOT}/bin/modela-${MODELA_VERSION}"
 OS=$(uname -s)
 arch=$(uname -m)
 case $OS in
   CYGWIN* | MINGW64*)
     OS=windows.exe
-    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_windows_amd64/md.exe
+    url=https://storage.googleapis.com/modela-tools/install/${MODELA_VERSION}/modela_windows_amd64/md.exe
     ;;
   Darwin)
-    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_darwin_amd64/md 
+    url=https://storage.googleapis.com/modela-tools/install/${MODELA_VERSION}/modela_darwin_amd64/md 
     ;;
   Linux)
-    url=https://storage.googleapis.com/modeld-tools/install/${MODELD_VERSION}/modeld_linux_amd64/md 
+    url=https://storage.googleapis.com/modela-tools/install/${MODELA_VERSION}/modela_linux_amd64/md 
 esac
 
 
-tmpdir=$(mktemp -d /tmp/modeld.XXXXXX)
-srcfile="modeld-cli-${MODELD_VERSION}-${OS}"
+tmpdir=$(mktemp -d /tmp/modela.XXXXXX)
+srcfile="modela-cli-${MODELA_VERSION}-${OS}"
 if [ -n "${cli_arch}" ]; then
   srcfile="${srcfile}-${cli_arch}"
 fi
@@ -116,12 +116,12 @@ fi
 if [ -e "${dstfile}" ]; then
   if validate_checksum "${dstfile}"; then
     echo ""
-    echo "modeld ${MODELD_VERSION} was already downloaded; making it the default 🎉"
+    echo "modela ${MODELA_VERSION} was already downloaded; making it the default 🎉"
     echo ""
     echo "To force re-downloading, delete '${dstfile}' then run me again."
     (
-      rm -f "${INSTALLROOT}/bin/modeldctl"
-      ln -s "${dstfile}" "${INSTALLROOT}/bin/modeldctl"
+      rm -f "${INSTALLROOT}/bin/modelactl"
+      ln -s "${dstfile}" "${INSTALLROOT}/bin/modelactl"
     )
     happyexit
   fi
@@ -152,6 +152,6 @@ fi
 
 rm -r "$tmpdir"
 
-echo "md ${MODELD_VERSION} was successfully installed 🎉"
+echo "md ${MODELA_VERSION} was successfully installed 🎉"
 echo ""
 happyexit
