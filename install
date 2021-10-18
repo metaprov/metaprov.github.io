@@ -2,7 +2,7 @@
 
 set -eu
 
-MODELA_VERSION="v0.4.98"
+MODELA_VERSION="v0.4.107"
 INSTALLROOT=${INSTALLROOT:-"${HOME}/.modela"}
 
 echo ${MODELA_VERSION}
@@ -15,10 +15,10 @@ happyexit() {
   echo ""
   echo "Now run:"
   echo ""
-  echo "  md system verify --pre       # validate that modela can be installed"
-  echo "  md system install            # install the control plane into the 'modela-system' namespace"
-  echo "  md system verify             # validate everything worked!"
-  echo "  md system dashboard          # launch the dashboard"
+  echo "  modela system verify --pre       # validate that modela can be installed"
+  echo "  modela install            # install the control plane into the 'modela-system' namespace"
+  echo "  modela system verify             # validate everything worked!"
+  echo "  modela system dashboard          # launch the dashboard"
   echo ""
   exit 0
 }
@@ -96,13 +96,13 @@ arch=$(uname -m)
 case $OS in
   CYGWIN* | MINGW64*)
     OS=windows.exe
-    url=https://storage.googleapis.com/modela-tools/install/${MODELA_VERSION}/modela_windows_amd64/md.exe
+    url=https://storage.googleapis.com/modela-tools/install/${MODELA_VERSION}/modela_windows_amd64/modela.exe
     ;;
   Darwin)
-    url=https://storage.googleapis.com/modela-tools/install/${MODELA_VERSION}/modela_darwin_amd64/md 
+    url=https://storage.googleapis.com/modela-tools/install/${MODELA_VERSION}/modela_darwin_amd64/modela 
     ;;
   Linux)
-    url=https://storage.googleapis.com/modela-tools/install/${MODELA_VERSION}/modela_linux_amd64/md 
+    url=https://storage.googleapis.com/modela-tools/install/${MODELA_VERSION}/modela_linux_amd64/modela 
 esac
 
 
@@ -120,8 +120,8 @@ if [ -e "${dstfile}" ]; then
     echo ""
     echo "To force re-downloading, delete '${dstfile}' then run me again."
     (
-      rm -f "${INSTALLROOT}/bin/modelactl"
-      ln -s "${dstfile}" "${INSTALLROOT}/bin/modelactl"
+      rm -f "${INSTALLROOT}/bin/modela"
+      ln -s "${dstfile}" "${INSTALLROOT}/bin/modela"
     )
     happyexit
   fi
@@ -145,13 +145,13 @@ fi
   mkdir -p "${INSTALLROOT}/bin"
   mv "${tmpdir}/${srcfile}" "${dstfile}"
   chmod +x "${dstfile}"
-  rm -f "${INSTALLROOT}/bin/md"
-  ln -s "${dstfile}" "${INSTALLROOT}/bin/md"
+  rm -f "${INSTALLROOT}/bin/modela"
+  ln -s "${dstfile}" "${INSTALLROOT}/bin/modela"
 )
 
 
 rm -r "$tmpdir"
 
-echo "md ${MODELA_VERSION} was successfully installed 🎉"
+echo "modela ${MODELA_VERSION} was successfully installed 🎉"
 echo ""
 happyexit
