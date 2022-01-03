@@ -4,6 +4,7 @@ set -eu
 
 MODELA_VERSION="v0.4.332"
 
+
 INSTALLROOT=${INSTALLROOT:-"${HOME}/.modela"}
 
 echo ${MODELA_VERSION}
