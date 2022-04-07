@@ -2,7 +2,7 @@
 
 set -eu
 
-MODELA_VERSION="v0.4.652"
+MODELA_VERSION="v0.4.661"
 
 INSTALLROOT=${INSTALLROOT:-"${HOME}/.modela"}
 
